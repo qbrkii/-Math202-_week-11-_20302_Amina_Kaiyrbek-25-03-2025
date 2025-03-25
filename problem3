@@ -1,0 +1,48 @@
+import numpy as np
+import scipy.integrate as spi
+
+# Define functions for integration
+def f1(x):
+    return np.exp(x) / (1 + x**2)
+
+def f2(x):
+    return np.sqrt(1 + np.cos(x))
+
+# Integration limits
+a1, b1 = 0, 2
+a2, b2 = 0, np.pi / 2
+n = 100  # Number of intervals
+
+# Create equally spaced points
+x1 = np.linspace(a1, b1, n+1)
+x2 = np.linspace(a2, b2, n+1)
+
+# Function values at the points
+y1 = f1(x1)
+y2 = f2(x2)
+
+# Trapezoidal Rule
+I1_trap = np.trapz(y1, x1)
+I2_trap = np.trapz(y2, x2)
+
+# Midpoint Rule
+mid_x1 = (x1[:-1] + x1[1:]) / 2
+mid_x2 = (x2[:-1] + x2[1:]) / 2
+
+I1_mid = np.sum(f1(mid_x1) * (b1 - a1) / n)
+I2_mid = np.sum(f2(mid_x2) * (b2 - a2) / n)
+
+# Simpson's Rule
+I1_simp = spi.simps(y1, x1)  # Corrected function name
+I2_simp = spi.simps(y2, x2)  # Corrected function name
+
+# Print results rounded to six decimal places
+print(f"Integral (0 to 2) of e^x / (1 + x^2):")
+print(f"  Trapezoidal Rule: {I1_trap:.6f}")
+print(f"  Midpoint Rule: {I1_mid:.6f}")
+print(f"  Simpson's Rule: {I1_simp:.6f}")
+
+print(f"\nIntegral (0 to π/2) of sqrt(1 + cos(x)):")
+print(f"  Trapezoidal Rule: {I2_trap:.6f}")
+print(f"  Midpoint Rule: {I2_mid:.6f}")
+print(f"  Simpson's Rule: {I2_simp:.6f}")
